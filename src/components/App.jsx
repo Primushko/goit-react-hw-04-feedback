@@ -35,7 +35,7 @@ export function App() {
           onLeaveFeedback={handleLeaveFeedback}
         />
         {total === 0 ? (
-          <Notification message="There is no feedback"></Notification>
+          <Notification message="There is no feedback" />
         ) : (
           <Statistics
             good={good}
