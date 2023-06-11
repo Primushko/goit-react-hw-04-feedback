@@ -5,25 +5,35 @@ import { Notification } from './Notification/Notification.jsx';
 import { Section } from './Section/Section.jsx';
 
 export function App() {
-  const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 });
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
   const countTotalFeedback = () => {
-    return feedback.good + feedback.neutral + feedback.bad;
+    return good + neutral + bad;
   };
 
   const countPositiveFeedbackPercentage = () => {
-    return Math.round((feedback.good / countTotalFeedback()) * 100);
+    return Math.round((good / countTotalFeedback()) * 100);
   };
 
   const handleLeaveFeedback = event => {
     const { name } = event.target;
-    setFeedback(prevFeedback => ({
-      ...prevFeedback,
-      [name]: prevFeedback[name] + 1,
-    }));
+    switch (name) {
+      case 'good':
+        setGood(prevGood => prevGood + 1);
+        break;
+      case 'neutral':
+        setNeutral(prevNeutral => prevNeutral + 1);
+        break;
+      case 'bad':
+        setBad(prevBad => prevBad + 1);
+        break;
+      default:
+        break;
+    }
   };
 
-  const { good, neutral, bad } = feedback;
   const total = countTotalFeedback();
   const positiveFeedback = countPositiveFeedbackPercentage();
 
@@ -31,7 +41,7 @@ export function App() {
     <>
       <Section title="Please leave feedback">
         <FeedbackOptions
-          options={feedback}
+          options={{ good, neutral, bad }}
           onLeaveFeedback={handleLeaveFeedback}
         />
         {total === 0 ? (
@@ -49,55 +59,49 @@ export function App() {
     </>
   );
 }
-// export class App extends Component {
-//   constructor() {
-//     super();
-//     this.state = {
-//       good: 0,
-//       neutral: 0,
-//       bad: 0,
-//     };
-//   }
 
-//   countTotalFeedback = () => {
-//     return this.state.good + this.state.neutral + this.state.bad;
+// export function App() {
+//   const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 });
+
+//   const countTotalFeedback = () => {
+//     return feedback.good + feedback.neutral + feedback.bad;
 //   };
 
-//   countPositiveFeedbackPercentage = () => {
-//     return Math.round((this.state.good / this.countTotalFeedback()) * 100);
+//   const countPositiveFeedbackPercentage = () => {
+//     return Math.round((feedback.good / countTotalFeedback()) * 100);
 //   };
 
-//   handleLeaveFeedback = event => {
+//   const handleLeaveFeedback = event => {
 //     const { name } = event.target;
-//     this.setState(state => ({ [name]: state[name] + 1 }));
+//     setFeedback(prevFeedback => ({
+//       ...prevFeedback,
+//       [name]: prevFeedback[name] + 1,
+//     }));
 //   };
 
-//   render() {
-//     const { good, neutral, bad } = this.state;
+//   const { good, neutral, bad } = feedback;
+//   const total = countTotalFeedback();
+//   const positiveFeedback = countPositiveFeedbackPercentage();
 
-//     const total = this.countTotalFeedback();
-
-//     const positiveFeedback = this.countPositiveFeedbackPercentage();
-//     return (
-//       // <>
-//       //   <Section title="Please leave feedback">
-//       //     <FeedbackOptions
-//       //       options={this.state}
-//       //       onLeaveFeedback={this.handleLeaveFeedback}
-//       //     />
-//       //     {total === 0 ? (
-//       //       <Notification message="There is no feedback"></Notification>
-//       //     ) : (
-//       //       <Statistics
-//       //         good={good}
-//       //         neutral={neutral}
-//       //         bad={bad}
-//       //         total={total}
-//       //         positivePercentage={positiveFeedback}
-//       //       />
-//       //     )}
-//       //   </Section>
-//       // </>
-//     );
-//   }
+//   return (
+//     <>
+//       <Section title="Please leave feedback">
+//         <FeedbackOptions
+//           options={feedback}
+//           onLeaveFeedback={handleLeaveFeedback}
+//         />
+//         {total === 0 ? (
+//           <Notification message="There is no feedback" />
+//         ) : (
+//           <Statistics
+//             good={good}
+//             neutral={neutral}
+//             bad={bad}
+//             total={total}
+//             positivePercentage={positiveFeedback}
+//           />
+//         )}
+//       </Section>
+//     </>
+//   );
 // }
